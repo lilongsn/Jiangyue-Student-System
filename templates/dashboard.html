@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mb-10">
+    <h1 class="text-4xl font-black text-gray-800 tracking-tight">简予 JIANGYUE 看板</h1>
+</div>
+
+<div class="grid grid-cols-2 gap-8 mb-10">
+    <div class="bg-white/50 backdrop-blur-md p-8 rounded-[2rem] border border-white/40 shadow-lg">
+        <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">在校学生总数</span>
+        <div class="text-5xl font-black mt-2 text-gray-800">{{ stats.total }}</div>
+    </div>
+    <div class="bg-white/50 backdrop-blur-md p-8 rounded-[2rem] border border-white/40 shadow-lg">
+        <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">平均分</span>
+        <div class="text-5xl font-black mt-2 text-gray-800">{{ stats.avg_score }}</div>
+    </div>
+</div>
+
+<div class="grid grid-cols-2 gap-8">
+    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-zinc-200">
+        <h3 class="text-xs font-bold mb-6 text-zinc-400 uppercase">专业分布</h3>
+        <canvas id="mChart"></canvas>
+    </div>
+    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-zinc-200">
+        <h3 class="text-xs font-bold mb-6 text-zinc-400 uppercase">男女比例</h3>
+        <canvas id="gChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // 专业分布图
+    new Chart(document.getElementById('mChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ m_labels|tojson }},
+            datasets: [{ label: '人数', data: {{ m_values|tojson }}, backgroundColor: '#6366f1' }]
+        }
+    });
+
+    // 性别比例图
+    new Chart(document.getElementById('gChart'), {
+        type: 'doughnut',
+        data: {
+            labels: {{ g_labels|tojson }},
+            datasets: [{ data: {{ g_values|tojson }}, backgroundColor: ['#818cf8', '#f472b6'] }]
+        }
+    });
+</script>
+{% endblock %}
